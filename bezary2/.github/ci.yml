@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop, staging ]
+  pull_request:
+    branches: [ main, develop, staging ]
+
+jobs:
+  backend-check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: 'backend/package-lock.json'
+      
+      - name: Install Dependencies
+        working-directory: ./backend
+        run: npm ci
+      
+      - name: Lint
+        working-directory: ./backend
+        run: npm run lint
+        
+      - name: Test Unit
+        working-directory: ./backend
+        run: npm run test
+        
+      - name: Build
+        working-directory: ./backend
+        run: npm run build
+
+  web-admin-check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: 'web-admin/package-lock.json'
+
+      - name: Install Dependencies
+        working-directory: ./web-admin
+        run: npm ci
+
+      - name: Lint
+        working-directory: ./web-admin
+        run: npm run lint
+        
+      - name: Build
+        working-directory: ./web-admin
+        run: npm run build
