@@ -1,13 +1,4 @@
 version: '3.8'
-<<<<<<< HEAD
-services:
-  db:
-    image: postgres:15
-    ports: ["5432:5432"]
-    environment:
-      POSTGRES_DB: bezary
-      POSTGRES_PASSWORD: admin
-=======
 
 services:
   db:
@@ -32,4 +23,5 @@ services:
 
 volumes:
   postgres_data:
->>>>>>> develop
+
+
