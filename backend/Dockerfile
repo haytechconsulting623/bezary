@@ -1,14 +1,11 @@
-
 # 1. Builder Stage
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 
 COPY package*.json ./
-COPY prisma ./prisma/
 
 RUN npm install
-RUN npx prisma generate
 
 COPY . .
 
@@ -24,10 +21,9 @@ ENV NODE_ENV=production
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/prisma ./prisma
 
 # Expose port
-EXPOSE 4000
+EXPOSE 3000
 
-# Start command (with seeds/migrations check ideally)
+# Start command
 CMD ["npm", "run", "start:prod"]

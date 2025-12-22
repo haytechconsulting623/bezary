@@ -1,6 +1,20 @@
 version: '3.8'
 
 services:
+  backend:
+    build: ./backend
+    container_name: bezary_backend
+    restart: always
+    environment:
+      DATABASE_URL: postgres://bezary_user:bezary_password@db:5432/bezary_db
+      JWT_SECRET: supersecretchangeinproduction
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+
   db:
     image: postgres:15
     container_name: bezary_db
