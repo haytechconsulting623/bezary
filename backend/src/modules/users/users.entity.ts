@@ -4,7 +4,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
 } from 'typeorm';
+import { VendorsEntity } from '../vendors/vendors.entity';
 
 export enum UserRole {
   ADMINISTRATOR = 'ADMINISTRATOR',
@@ -44,4 +46,7 @@ export class UsersEntity {
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt: Date;
+
+  @OneToOne(() => VendorsEntity, vendor => vendor.user)
+  vendorProfile: VendorsEntity;
 }
